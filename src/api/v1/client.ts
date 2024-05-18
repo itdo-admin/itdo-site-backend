@@ -4,6 +4,7 @@ import type { FastifyInstance } from "fastify";
 export default async function(fastify: FastifyInstance, opts) {
 	fastify
 		// .addHook('preHandler', auth)
+		.post('/auth', () => {})
 		.get('/vacancy/', () => {
 		})
 		.get('/vacancy/:id(^\\d+)/info', () => {

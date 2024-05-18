@@ -6,6 +6,7 @@ export default async function(fastify: FastifyInstance, opts) {
 	fastify
 		.addHook('preHandler', () => {})
 		// Project
+
 		.post('/project/add', () => {})
 		.get(`/project/delete/:id(^\\d+)`, () => {})
 		.post('/project/edit', () => {})

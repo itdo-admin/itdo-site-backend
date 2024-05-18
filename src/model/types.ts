@@ -1,15 +1,15 @@
 
 
-export type AuthenticationParams = [string, string];
+export type GetSaltParams = [string];
 
 
-export interface IAuthenticationResult {
-    result: number;
+export interface IGetSaltResult {
+    password: string;
 };
 
 
-export interface IAuthenticationQuery {
-    params: AuthenticationParams;
-    result: IAuthenticationResult;
+export interface IGetSaltQuery {
+    params: GetSaltParams;
+    result: IGetSaltResult;
 };
 
