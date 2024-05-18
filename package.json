@@ -1,0 +1,24 @@
+{
+  "name": "cm-itdo-backand",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "generate-types-db": "sqlx-ts ./src/model/ -g --config .sqlxrc.json --generate-path ./src/model/types.ts"
+  },
+  "dependencies": {
+    "@fastify/middie": "^8.3.1",
+    "@types/pg": "^8.11.6",
+    "fastify": "^4.27.0",
+    "mocha": "^10.4.0",
+    "nodemailer": "^6.9.13",
+    "pg": "^8.11.5",
+    "pg-native": "^3.0.1",
+    "sqlx-ts": "^0.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "@types/nodemailer": "^6.4.15"
+  }
+}
