@@ -10,7 +10,6 @@ export async function checkAuthUser(login, passwordUser){
             [login, password, 1])
     } catch (e) {
         console.log(e);
-        throw e;
     }
 }
 
