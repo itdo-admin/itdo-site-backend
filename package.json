@@ -5,9 +5,11 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "generate-types-db": "sqlx-ts ./src/model/ -g --config .sqlxrc.json --generate-path ./src/model/types.ts"
+    "generate-types-db": "sqlx-ts ./src/model/ -g --config .sqlxrc.json --generate-path ./src/model/types.ts",
+    "test": "mocha"
   },
   "dependencies": {
+    "@fastify/cookie": "^9.3.1",
     "@fastify/middie": "^8.3.1",
     "@types/pg": "^8.11.6",
     "bcrypt": "^5.1.1",
