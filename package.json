@@ -11,6 +11,7 @@
   "dependencies": {
     "@fastify/cookie": "^9.3.1",
     "@fastify/middie": "^8.3.1",
+    "@fastify/session": "^10.9.0",
     "@types/pg": "^8.11.6",
     "bcrypt": "^5.1.1",
     "fastify": "^4.27.0",
@@ -18,7 +19,8 @@
     "nodemailer": "^6.9.13",
     "pg": "^8.11.5",
     "pg-native": "^3.0.1",
-    "sqlx-ts": "^0.12.0"
+    "sqlx-ts": "^0.12.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

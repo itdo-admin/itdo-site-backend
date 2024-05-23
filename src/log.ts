@@ -1,0 +1,3 @@
+function ErrorExtention(message: string) {
+
+}
