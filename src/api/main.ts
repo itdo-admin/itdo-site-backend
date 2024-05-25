@@ -32,15 +32,18 @@ fastify.addHook('preSerialization', (request: FastifyRequest, reply, payload: Re
 });
 
 fastify.register(cookie, {
-	secret: "ead55c2fd4beca20321647515d75150b4e3fcd8de9892b6ae2d5853201dbc60e", // for cookies signature
+	// secret: "ead55c2fd4beca20321647515d75150b4e3fcd8de9892b6ae2d5853201dbc60e", // for cookies signature
 	hook: 'onRequest', // set too false to disable cookie autoparsing or set autoparsing on any of the following hooks: 'onRequest', 'preParsing', 'preHandler', 'preValidation'. default: 'onRequest'
+	cookie: { secure: false },
 	parseOptions: {
-		httpOnly: false,
+	// 	httpOnly: false,
+		path: '/'
 	}  // options for parsing cookies
 } as FastifyCookieOptions)
 
 // fastify.register(session, {
 // 	secret: 'fa169a901b7b1e79fe7cff33ccf7edbbd2f9fc2e06482ef520f3ea3de96ace77',
+// 	cookieName: "x-auth",
 // 	cookie: { secure: false } // Установите secure: true для HTTPS
 // });
 

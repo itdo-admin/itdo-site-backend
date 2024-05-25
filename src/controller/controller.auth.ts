@@ -4,6 +4,7 @@ import type { FastifyReply } from "fastify";
 import { getHashPass } from "../model/auth.js";
 import type { Auth } from "./types";
 import { validateAuthUser } from "../validation/UserValidation.js";
+import * as repl from "node:repl";
 
 export const storage = {} as { user: { token: string } }
 
@@ -33,14 +34,14 @@ export async function authUser(req: Auth, reply: FastifyReply) {
 				const token = generateToken()
 				console.log('generateToken', token)
 
-				reply.setCookie('test', token, {
-					maxAge: 60_000,
-					expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-					signed: true,
-				})
+				reply
+					.setCookie('x-auth', token)
 
 				// @ts-ignore
 				storage['login'] = { 'user': login, token: token };
+
+
+				// reply.send({ body: 'hello world' })
 				reply.redirect('/api/v1/admin/')
 			}
 

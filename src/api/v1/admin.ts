@@ -5,7 +5,7 @@ import {authenticate} from "../../controller/controller.auth.js";
 export default async function(fastify: FastifyInstance) {
 	fastify
 		.addHook('preHandler', async (req, reply) => {
-			const authHeader = req.cookies.test;
+			const authHeader = req.cookies['x-auth'];
 			console.log('req.cookies', req.cookies)
 			console.log('authHeader', authHeader)
 			if (!authHeader) {
@@ -14,14 +14,11 @@ export default async function(fastify: FastifyInstance) {
 			}
 
 			// const token = authHeader.split(' ')[1];
-			const cookieValue = req.unsignCookie(req.cookies.test);
-			if (cookieValue.valid) {
-				const user = authenticate(cookieValue.value);
-				console.log('testsss', user)
-				if (!user) {
-					reply.code(403)
-					reply.send({error: 'Forbidden'})
-				}
+			const user = authenticate(authHeader);
+			// console.log('testsss', user)
+			if (!user?.token) {
+				reply.code(403)
+				reply.send({ error: 'Forbidden' })
 			}
 
 			// Добавляем пользователя в запрос для использования в обработчиках маршрутов
@@ -30,7 +27,7 @@ export default async function(fastify: FastifyInstance) {
 		// Project
 
 		.get('/', (req, reply) => {
-			reply.send('test')
+			reply.send('Hello Wordl')
 		})
 		.post('/project/add', () => {})
 		.get(`/project/delete/:id(^\\d+)`, () => {})
