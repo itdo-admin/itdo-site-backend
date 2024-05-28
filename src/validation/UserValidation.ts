@@ -6,7 +6,7 @@ export function validateAuthUser(data: AuthUserBody) {
 
 	if (!parseResult.success) {
 		console.log('parseResult.error.errors', parseResult.error.errors)
-		throw new Error(parseResult.error.errors.map(e => e.message).join(", "));
+		throw new Error(parseResult.error.message);
 	}
 	return parseResult.data;
 }

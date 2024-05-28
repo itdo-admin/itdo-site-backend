@@ -8,12 +8,15 @@ export async function authUser(req: Auth, reply: FastifyReply) {
 		const validatedUser = validateAuthUser(req.body);
 		const authUser = await auth(validatedUser)
 
-		if(authUser.status) {
+		if(authUser instanceof Error) {
+			reply
+				.status(401)
+				.send({ msg: authUser.message });
+		} else {
 			reply
 				.setCookie('x-auth', authUser.token)
 				.redirect('/api/v1/admin/');
 		}
-
 	} catch (error) {
 		console.log(error)
 		reply.status(400);

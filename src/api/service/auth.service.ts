@@ -34,8 +34,8 @@ export async function auth(validatedUser: AuthUserBody) {
 			}
 		}
 
-		throw new Error('Password in not correct');
+		return new Error('Password is not correct');
 	} else {
-		throw new Error('Login is not correct');
+		return new Error('Login is not correct');
 	}
 }

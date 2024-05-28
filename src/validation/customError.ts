@@ -7,7 +7,7 @@ const customErrorMap: z.ZodErrorMap = (error, ctx) => {
 	switch (error.code) {
 		case z.ZodIssueCode.invalid_type:
 			const fields = error.path || [];
-
+			console.log('error');
 			if (error.expected === "string") {
 				return { message: `${fields[0]} is required`};
 			}
@@ -17,12 +17,14 @@ const customErrorMap: z.ZodErrorMap = (error, ctx) => {
 			// error.params won't be set unless you passed
 			// a `params` arguments into a custom validator
 			const params = error.params || {};
+			console.log('fefpwl')
 			if (params.myField) {
 				return { message: `Bad input: ${params.myField}` };
 			}
 			break;
 	}
 
+	console.log('erew')
 	return { message: ctx.defaultError };
 };
 
