@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import {authenticate} from "../../controller/controller.auth.js";
+import { authenticateCookie } from "../service/auth.service.js";
 
 
 export default async function(fastify: FastifyInstance) {
@@ -13,8 +13,7 @@ export default async function(fastify: FastifyInstance) {
 				return;
 			}
 
-			// const token = authHeader.split(' ')[1];
-			const user = authenticate(authHeader);
+			const user = await authenticateCookie(authHeader);
 			// console.log('testsss', user)
 			if (!user?.token) {
 				reply.code(403)
@@ -27,7 +26,9 @@ export default async function(fastify: FastifyInstance) {
 		// Project
 
 		.get('/', (req, reply) => {
-			reply.send('Hello Wordl')
+			return {
+
+			}
 		})
 		.post('/project/add', () => {})
 		.get(`/project/delete/:id(^\\d+)`, () => {})

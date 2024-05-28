@@ -1,7 +1,7 @@
 import { UserSchema } from './userSchemas.js';
-import type { User } from "./admin";
+import type { AuthUserBody } from "../api/types";
 
-export function validateAuthUser(data: { login: string; password: string }) {
+export function validateAuthUser(data: AuthUserBody) {
 	const parseResult = UserSchema.safeParse(data);
 
 	if (!parseResult.success) {
