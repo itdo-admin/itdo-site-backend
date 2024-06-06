@@ -1,6 +1,5 @@
 import Fastify, { type FastifyRequest, type RequestPayload } from 'fastify';
 import cookie, { type FastifyCookieOptions } from '@fastify/cookie';
-import session from '@fastify/session';
 
 const fastify = Fastify({
 	logger: true

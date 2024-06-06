@@ -11,7 +11,6 @@
   "dependencies": {
     "@fastify/cookie": "^9.3.1",
     "@fastify/middie": "^8.3.1",
-    "@fastify/session": "^10.9.0",
     "@types/pg": "^8.11.6",
     "bcrypt": "^5.1.1",
     "chai": "^5.1.1",
