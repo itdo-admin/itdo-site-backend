@@ -16,15 +16,16 @@ export default async function(fastify: FastifyInstance) {
 
 			const user = await authenticateCookie(authHeader);
 
+			console.log(user)
 			if (!user?.token) {
 				reply.code(403)
 				reply.send({ error: 'Forbidden' })
 			}
 		})
-		// Project
-
-		.get('/', (req, reply) => {
-			return {}
+		.get('/check', (req, reply) => {
+			return {
+				chackIn: true
+			}
 		})
 		.post('/project/add', () => {})
 		.get(`/project/delete/:id(^\\d+)`, () => {})

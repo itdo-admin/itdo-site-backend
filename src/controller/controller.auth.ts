@@ -15,7 +15,7 @@ export async function authUser(req: Auth, reply: FastifyReply) {
 		} else {
 			reply
 				.setCookie('x-auth', authUser.token)
-				.redirect('/api/v1/admin/');
+				.redirect('/api/v1/admin/check');
 		}
 	} catch (error) {
 		console.log(error)
