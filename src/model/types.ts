@@ -20,6 +20,59 @@ export interface IGetVacancyAllQuery {
 
 
 
+
+export type GetVacancyIdParams = [number];
+
+
+export interface IGetVacancyIdResult {
+    description: string | null;
+	id: number;
+	photo: string | null;
+	salary: string | null;
+	summary: string | null;
+	title: string | null;
+};
+
+
+export interface IGetVacancyIdQuery {
+    params: GetVacancyIdParams;
+    result: IGetVacancyIdResult;
+};
+
+
+
+
+export type DeleteJobParams = [number];
+
+
+export interface IDeleteJobResult {
+    
+};
+
+
+export interface IDeleteJobQuery {
+    params: DeleteJobParams;
+    result: IDeleteJobResult;
+};
+
+
+
+
+export type InsertJobParams = [string, string, string, string, string];
+
+
+export interface IInsertJobResult {
+    
+};
+
+
+export interface IInsertJobQuery {
+    params: InsertJobParams;
+    result: IInsertJobResult;
+};
+
+
+
 export type GetSaltParams = [string];
 
 
