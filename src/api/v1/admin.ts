@@ -24,7 +24,7 @@ export default async function(fastify: FastifyInstance) {
 		})
 		.get('/check', (req, reply) => {
 			return {
-				chackIn: true
+				checkIn: true
 			}
 		})
 		.post('/project/add', () => {})
