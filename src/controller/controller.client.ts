@@ -21,3 +21,5 @@ export async function getVacancy(req: FastifyRequest, reply: FastifyReply) {
 		}
 	}
 }
+
+export async function
