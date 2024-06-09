@@ -1,5 +1,6 @@
-import {getVacancyAll, getVacancyId} from "../../model/model.client.js";
+import {addVacancy, deleteVacancy, getVacancyAll, getVacancyId, updateVacancy} from "../../model/model.client.js";
 import type { IGetVacancyAllResult } from "../../model/types";
+import type {InsertJob, job} from "../../validation/userSchemas";
 
 export async function getVacancyService(): Promise<IGetVacancyAllResult[][] | Error> {
 	try {
@@ -14,9 +15,39 @@ export async function getVacancyService(): Promise<IGetVacancyAllResult[][] | Er
 export async function getVacancyIdService(id: number) {
 	try {
 		const vc = await getVacancyId(id);
-		return vc.rows;
+		return vc.rows[0];
 	} catch (e) {
 		console.log(e);
 		return new Error('Error getVacancyIdService');
+	}
+}
+
+export async function updateVacancyService(data: job) {
+	try {
+		const vc = await updateVacancy(data);
+		return vc.rows;
+	} catch (e) {
+		console.log(e);
+		return new Error('Error updateVacancyService');
+	}
+}
+
+export async function deleteVacancyService(id: number) {
+	try {
+		const vc = await deleteVacancy(id);
+		return vc.rows;
+	} catch(e) {
+		console.log(e);
+		return new Error('Error deleteVacancyService');
+	}
+}
+
+export async function addVacancyService(data: InsertJob) {
+	try {
+		const vc = await addVacancy(data);
+		return vc.rows;
+	} catch(e) {
+		console.log(e);
+		return new Error('Error deleteVacancyService');
 	}
 }

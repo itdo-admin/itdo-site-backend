@@ -30,7 +30,7 @@ export async function getVacancyId(id: number) {
 	}
 }
 
-export async function updateVacancy(body: job, test = false) {
+export async function updateVacancy(body: job) {
 	try {
 		let query = 'UPDATE jobs SET '
 
@@ -44,7 +44,7 @@ export async function updateVacancy(body: job, test = false) {
 		const finalQuery = `${query}${setClauses.join(', ')}`;
 
 		// Необходимо преобразование, потому что иначе возникает ошибка типизации
-		return test && await client.query(sql(finalQuery as unknown as TemplateStringsArray), values) || query
+		return await client.query(sql(finalQuery as unknown as TemplateStringsArray), values)
 	} catch (e) {
 		console.log(e);
 		throw e;
