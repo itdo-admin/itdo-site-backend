@@ -6,8 +6,8 @@ import type {
 	IDeleteJobResult, IGetVacancyAllResult, IGetVacancyIdResult,
 	IInsertJobResult, InsertJobParams
 } from "./types";
-import {type InsertJob, type job} from "../validation/userSchemas.js";
-import type {QueryResult, QueryResultBase} from "pg";
+import { type InsertJob, type JobOptional } from "../validation/userSchemas.js";
+import type { QueryResultBase } from "pg";
 
 export async function getVacancyAll(){
 	try {
@@ -31,17 +31,15 @@ export async function getVacancyId(id: number) {
 	}
 }
 
-export async function updateVacancy(body: job): Promise<QueryResultBase> {
+export async function updateVacancy(body: JobOptional): Promise<QueryResultBase> {
 	try {
-		let query = 'UPDATE jobs SET '
+		let query: string = 'UPDATE jobs SET '
 
 		const setClauses = Object.keys(body).map((key, index) => {
-			const value = body[key as keyof job];
 			return `${key} = $${index + 1}`;
 		});
 
 		const values = Object.values(body);
-
 		const finalQuery = `${query}${setClauses.join(', ')}`;
 
 		// Необходимо преобразование, потому что иначе возникает ошибка типизации
