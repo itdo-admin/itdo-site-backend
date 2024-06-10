@@ -1,6 +1,6 @@
-import {addVacancy, deleteVacancy, getVacancyAll, getVacancyId, updateVacancy} from "../../model/model.client.js";
+import { addVacancy, deleteVacancy, getVacancyAll, getVacancyId, updateVacancy } from "../../model/model.client.js";
 import type { IGetVacancyAllResult } from "../../model/types";
-import type {InsertJob, job} from "../../validation/userSchemas";
+import type { InsertJob, job } from "../../validation/userSchemas";
 
 export async function getVacancyService(): Promise<IGetVacancyAllResult[][] | Error> {
 	try {
@@ -25,7 +25,7 @@ export async function getVacancyIdService(id: number) {
 export async function updateVacancyService(data: job) {
 	try {
 		const vc = await updateVacancy(data);
-		return vc.rows;
+		return vc.rowCount !== null && vc.rowCount > 1;
 	} catch (e) {
 		console.log(e);
 		return new Error('Error updateVacancyService');

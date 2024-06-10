@@ -7,6 +7,7 @@ import type {
 	IInsertJobResult, InsertJobParams
 } from "./types";
 import {type InsertJob, type job} from "../validation/userSchemas.js";
+import type {QueryResult, QueryResultBase} from "pg";
 
 export async function getVacancyAll(){
 	try {
@@ -30,7 +31,7 @@ export async function getVacancyId(id: number) {
 	}
 }
 
-export async function updateVacancy(body: job) {
+export async function updateVacancy(body: job): Promise<QueryResultBase> {
 	try {
 		let query = 'UPDATE jobs SET '
 

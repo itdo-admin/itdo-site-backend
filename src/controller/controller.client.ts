@@ -6,7 +6,7 @@ import {
 	getVacancyService,
 	updateVacancyService
 } from "../api/service/vacansy.service.js";
-import type {ReqVacancyId, ReqVacancyUpdate} from "./types";
+import type {ReqVacancyAdd, ReqVacancyId, ReqVacancyUpdate} from "./types";
 import { ErrorHttp } from "./error.js";
 
 export abstract class ControllerVacancy {
@@ -49,7 +49,7 @@ export abstract class ControllerVacancy {
 		}
 	}
 
-	static async update(req: ReqVacancyUpdate, reply: FastifyReply) {
+	static async update(req: FastifyRequest<ReqVacancyUpdate>, reply: FastifyReply): Promise<boolean | void> {
 		try {
 			const updateData = req.body;
 			const vcs = await updateVacancyService(updateData);
@@ -79,7 +79,7 @@ export abstract class ControllerVacancy {
 		}
 	}
 
-	static async add(req: ReqVacancyUpdate, reply: FastifyReply) {
+	static async add(req: FastifyRequest<ReqVacancyAdd>, reply: FastifyReply) {
 		const data = req.body;
 		// TODO check validation
 		const res = await addVacancyService(data);

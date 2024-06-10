@@ -1,5 +1,7 @@
 import type { FastifyInstance } from "fastify";
 import { authenticateCookie } from "../service/auth.service.js";
+import { ControllerVacancy } from "../../controller/controller.client.js";
+import type { ReqVacancyAdd, ReqVacancyUpdate } from "../../controller/types";
 
 export default async function(fastify: FastifyInstance) {
 	fastify
@@ -22,7 +24,7 @@ export default async function(fastify: FastifyInstance) {
 				reply.send({ error: 'Forbidden' })
 			}
 		})
-		.get('/check', (req, reply) => {
+		.get('/check', async() => {
 			return {
 				checkIn: true
 			}
@@ -30,8 +32,10 @@ export default async function(fastify: FastifyInstance) {
 		.post('/project/add', () => {})
 		.get(`/project/delete/:id(^\\d+)`, () => {})
 		.post('/project/edit', () => {})
+		.post('/project/update', () => {})
 		// Jobs
-		.post('/jobs/add', () => {})
+		.post<ReqVacancyAdd>('/jobs/add', ControllerVacancy.add)
 		.post('/jobs/edit', () => {})
 		.get(`/jobs/delete/:id(^\\d+)`, () => {})
+		.post<ReqVacancyUpdate>('/jobs/update', ControllerVacancy.update);
 }
