@@ -1,4 +1,4 @@
-import {z, ZodOptional} from 'zod';
+import { z } from 'zod';
 
 export const UserSchema = z.object({
 	login: z.string().min(2, "Name is required"),
@@ -22,6 +22,6 @@ export const insertJobSchema = z.object(JobsSchema)
 const jobOptional = insertJobSchema.partial();
 
 export type InsertJob = z.infer<typeof insertJobSchema>
-export type job = z.infer<typeof getJobsAllSchema>;
+export type Job = z.infer<typeof getJobsAllSchema>;
 export type JobOptional = z.infer<typeof jobOptional>
 export type User = z.infer<typeof UserSchema>;

@@ -10,17 +10,17 @@ import type {ReqVacancyAdd, ReqVacancyId, ReqVacancyUpdate} from "./types";
 import { ErrorHttp } from "./error.js";
 
 export abstract class ControllerVacancy {
-	static async get(req: FastifyRequest, reply: FastifyReply) {
+	static async getAll(req: FastifyRequest, reply: FastifyReply) {
 		try {
 			const vc = await getVacancyService()
 
 			if(vc instanceof Error) {
 				reply
 					.status(500)
-					.send({ msg: vc.message });
-			} else {
-				return vc;
+				return { msg: vc.message };
 			}
+
+			return vc;
 		} catch (error) {
 			ErrorHttp(error, reply)
 		}
@@ -73,10 +73,10 @@ export abstract class ControllerVacancy {
 		if(deleted instanceof Error) {
 			reply
 				.status(500)
-				.send({ msg: deleted.message });
-		} else {
-			return deleted;
+			return { msg: deleted.message };
 		}
+
+		return deleted;
 	}
 
 	static async add(req: FastifyRequest<ReqVacancyAdd>, reply: FastifyReply) {

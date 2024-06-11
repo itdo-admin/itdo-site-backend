@@ -1,8 +1,40 @@
 import Fastify, { type FastifyRequest, type RequestPayload } from 'fastify';
 import cookie, { type FastifyCookieOptions } from '@fastify/cookie';
+import swagger from "@fastify/swagger";
+import swaggerUi from "@fastify/swagger-ui";
 
 const fastify = Fastify({
 	logger: true
+})
+
+await fastify.register(swagger, {
+	mode: 'dynamic',
+	openapi: {
+		openapi: "3.0.1",
+		info: {
+			title: 'API Documentation',
+			description: 'API Documentation for my Fastify project',
+			version: '1.0.0',
+		},
+		servers: [
+			{
+				url: '/',
+				description: "localhost"
+			},
+		],
+	},
+})
+await fastify.register(swaggerUi, {
+	routePrefix: '/docs',
+	uiConfig: {
+		docExpansion: 'full',
+		deepLinking: true,
+	},
+	staticCSP: true,
+	transformSpecification: (swaggerObject, request, reply) => {
+		return swaggerObject;
+	},
+	transformSpecificationClone: true,
 })
 
 fastify.register(async (app) => {
@@ -18,6 +50,10 @@ fastify.setErrorHandler((error, req, reply) => {
 
 // Модифицирует ответ до сериализации, добавляя ответ в объект
 fastify.addHook('preSerialization', (request: FastifyRequest, reply, payload: RequestPayload, done) => {
+	if('openapi' in payload) {
+		return done(null, payload)
+	}
+
 	const result = {
 		status: true,
 		body: payload
@@ -41,8 +77,7 @@ fastify.register(cookie, {
 
 fastify
 	.get('/', async function (req: FastifyRequest, reply) {
-		const responseData = { message: 'dada' };
-		return responseData;
+		return { message: 'dada' };
 	})
 	.get('/error', function (req, reply) {
 		throw new Error('efowkef');

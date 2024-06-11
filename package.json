@@ -12,6 +12,8 @@
     "@fastify/cookie": "^9.3.1",
     "@fastify/middie": "^8.3.1",
     "@fastify/multipart": "^8.3.0",
+    "@fastify/swagger": "^8.14.0",
+    "@fastify/swagger-ui": "^3.1.0",
     "@types/bcrypt": "^5.0.2",
     "@types/chai": "^4.3.16",
     "@types/mocha": "^10.0.6",
@@ -23,12 +25,15 @@
     "chai": "^5.1.1",
     "dotenv": "^16.4.5",
     "fastify": "^4.27.0",
+    "fastify-cli": "^6.1.1",
     "fastify-file-upload": "^4.0.0",
+    "node-pg-migrate": "^7.4.0",
     "nodemailer": "^6.9.13",
     "pg": "^8.11.5",
     "pg-native": "^3.0.1",
     "sinon": "^18.0.0",
-    "sqlx-ts": "^0.12.0"
+    "sqlx-ts": "^0.12.0",
+    "zod-to-json-schema": "^3.23.0"
   },
   "devDependencies": {
     "mocha": "^10.4.0",

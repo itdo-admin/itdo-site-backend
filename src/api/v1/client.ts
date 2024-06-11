@@ -1,19 +1,23 @@
 import type { FastifyInstance } from "fastify";
 import { authUser } from "../../controller/controller.auth.js";
-import type { User } from "../../validation/admin";
 import { ControllerVacancy } from "../../controller/controller.client.js"
-import type {Auth, ReqVacancyId} from "../../controller/types";
+import type { Auth, ReqVacancyId } from "../../controller/types";
+import { createRouteSchema } from '../../utils/schemaUtils.js';
+import { getJobsAllSchema, UserSchema } from "../../validation/userSchemas.js";
 
 export default async function(fastify: FastifyInstance) {
 	fastify
-		// .addHook('preHandler', auth)
-		.post<Auth>('/auth', authUser)
-		.get('/vacancy', ControllerVacancy.get)
-		.get<ReqVacancyId>('/vacancy/:id(^\\d+)/info', ControllerVacancy.getId)
-		// index???
-		.get('/projects/page/index', () => {
-		})
+		.post<Auth>('/auth', {
+			schema: createRouteSchema(UserSchema, ['auth']),
+		}, authUser)
+		.get<ReqVacancyId>('/vacancy/:id(^\\d+)/info', {
+			schema: createRouteSchema(undefined, ['vacancy'], "Получение описания вакансии по id", getJobsAllSchema)
+		}, ControllerVacancy.getId)
+		.get('/vacancy', {
+			schema: createRouteSchema(undefined, ['vacancy'], "Получение всех вакансий", getJobsAllSchema)
+		}, ControllerVacancy.getAll)
 		.get('/projects', () => {
+			return "";
 		})
 		.post('/request/write', () => {
 		})
