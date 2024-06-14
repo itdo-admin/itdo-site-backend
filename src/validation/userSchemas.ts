@@ -13,10 +13,10 @@ const JobsSchema = {
 	salary: z.string()
 }
 
-export const getJobsAllSchema = z.object({
+export const getJobsAllSchema = z.array(z.object({
 	id: z.number(),
 	...JobsSchema
-})
+}))
 
 export const insertJobSchema = z.object(JobsSchema)
 const jobOptional = insertJobSchema.partial();
@@ -24,4 +24,3 @@ const jobOptional = insertJobSchema.partial();
 export type InsertJob = z.infer<typeof insertJobSchema>
 export type Job = z.infer<typeof getJobsAllSchema>;
 export type JobOptional = z.infer<typeof jobOptional>
-export type User = z.infer<typeof UserSchema>;

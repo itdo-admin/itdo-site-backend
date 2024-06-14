@@ -1,9 +1,26 @@
 import type {RouteShorthandOptions} from 'fastify';
 import fromZodSchema from 'zod-to-json-schema';
-import { ZodSchema } from 'zod';
+import { wrapSchemaInBaseResponse } from "../validation/customResponse.js";
 
-export const createRouteSchema = (bodySchema?: ZodSchema<any>, tags?: string[], description?: string, responseSchema?: ZodSchema<any>) => {
+interface RouteSchema {
+	properties?: any
+	querystring?: string
+	bodySchema?: any;
+	tags?: string[];
+	description?: string;
+	responseSchema?: any;
+	header?: string
+}
+
+export const createRouteSchema = ({ bodySchema, tags, description, responseSchema, properties }: RouteSchema) => {
 	const schema: RouteShorthandOptions['schema'] = {};
+
+	if(properties) {
+		schema.params = {
+			type: "object",
+			properties,
+		};
+	}
 
 	if (tags) {
 		schema.tags = tags;
@@ -19,7 +36,7 @@ export const createRouteSchema = (bodySchema?: ZodSchema<any>, tags?: string[], 
 
 	if (responseSchema) {
 		schema.response = {
-			200: fromZodSchema(responseSchema),
+			200: fromZodSchema(wrapSchemaInBaseResponse(responseSchema)),
 		};
 	}
 

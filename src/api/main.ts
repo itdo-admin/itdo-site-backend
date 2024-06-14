@@ -4,7 +4,16 @@ import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 
 const fastify = Fastify({
-	logger: true
+	logger: {
+		transport: {
+			target: 'pino-pretty',
+			options: {
+				colorize: true, // использовать цвета для лучшей читаемости
+				translateTime: true, // переводить timestamp в читаемый формат
+				ignore: 'pid,hostname', // игнорировать некоторые поля
+			}
+		}
+	}
 })
 
 await fastify.register(swagger, {
@@ -24,6 +33,7 @@ await fastify.register(swagger, {
 		],
 	},
 })
+
 await fastify.register(swaggerUi, {
 	routePrefix: '/docs',
 	uiConfig: {

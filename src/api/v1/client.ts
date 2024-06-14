@@ -8,13 +8,25 @@ import { getJobsAllSchema, UserSchema } from "../../validation/userSchemas.js";
 export default async function(fastify: FastifyInstance) {
 	fastify
 		.post<Auth>('/auth', {
-			schema: createRouteSchema(UserSchema, ['auth']),
+			schema: createRouteSchema({
+				tags: ['auth'],
+				bodySchema: UserSchema
+			})
 		}, authUser)
 		.get<ReqVacancyId>('/vacancy/:id(^\\d+)/info', {
-			schema: createRouteSchema(undefined, ['vacancy'], "Получение описания вакансии по id", getJobsAllSchema)
+			schema: createRouteSchema({
+				tags: ['vacancy'],
+				properties: {
+					id: { type: 'string' },
+				},
+			})
 		}, ControllerVacancy.getId)
 		.get('/vacancy', {
-			schema: createRouteSchema(undefined, ['vacancy'], "Получение всех вакансий", getJobsAllSchema)
+			schema: createRouteSchema({
+				tags: ['vacancy'],
+				description: "Получение всех вакансий",
+				responseSchema: getJobsAllSchema
+			})
 		}, ControllerVacancy.getAll)
 		.get('/projects', () => {
 			return "";

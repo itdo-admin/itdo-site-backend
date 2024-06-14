@@ -1,4 +1,4 @@
-import type {FastifyReply, FastifyRequest} from "fastify";
+import type { FastifyReply, FastifyRequest } from "fastify";
 import type { Auth } from "./types";
 import { validateAuthUser } from "../validation/UserValidation.js";
 import { auth } from "../api/service/auth.service.js";

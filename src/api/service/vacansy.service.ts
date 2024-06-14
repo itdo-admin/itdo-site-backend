@@ -1,6 +1,6 @@
 import { addVacancy, deleteVacancy, getVacancyAll, getVacancyId, updateVacancy } from "../../model/model.client.js";
 import type { IGetVacancyAllResult } from "../../model/types";
-import type {InsertJob, Job, JobOptional} from "../../validation/userSchemas";
+import type { InsertJob, JobOptional } from "../../validation/userSchemas";
 
 export async function getVacancyService(): Promise<IGetVacancyAllResult[][] | Error> {
 	try {

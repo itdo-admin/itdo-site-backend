@@ -8,5 +8,6 @@ export function validateAuthUser(data: AuthUserBody) {
 		console.log('parseResult.error.errors', parseResult.error.errors)
 		throw new Error(parseResult.error.message);
 	}
+
 	return parseResult.data;
 }

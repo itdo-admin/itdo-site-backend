@@ -1,18 +1,9 @@
 import type { FastifyRequest, RouteGenericInterface } from "fastify";
-import type {InsertJob, Job, JobOptional} from "../validation/userSchemas";
+import type { InsertJob, Job, JobOptional } from "../validation/userSchemas";
+import type { AuthUserBody } from "../api/types";
 
 export interface Auth extends RouteGenericInterface {
-	Body: {
-		login: string,
-		password: string
-	}
-	/* headers: {
-		'auth-userid-tg': string
-	} */
-}
-
-export interface FilterPF extends FastifyRequest {
-	Body: {}
+	Body: AuthUserBody
 }
 
 export interface ReqJobGetAll extends RouteGenericInterface {}
