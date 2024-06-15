@@ -55,7 +55,7 @@ fastify.register(async (app) => {
 
 fastify.setErrorHandler((error, req, reply) => {
 	fastify.log.error(error);
-	reply.status(500).send({ error: 'Something went wrong' });
+	reply.status(500).send({ error: error.message });
 });
 
 // Модифицирует ответ до сериализации, добавляя ответ в объект
@@ -71,6 +71,13 @@ fastify.addHook('preSerialization', (request: FastifyRequest, reply, payload: Re
 
 	if (payload && 'message' in payload) {
 		return done(null, payload);
+	}
+
+	if(payload && 'error' in payload) {
+		return done(null, {
+			status: false,
+			body: payload
+		})
 	}
 
 	return done(null, result);
@@ -90,7 +97,7 @@ fastify
 		return { message: 'dada' };
 	})
 	.get('/error', function (req, reply) {
-		throw new Error('efowkef');
+		throw new Error('Example error');
 	})
 
 // Run the server!

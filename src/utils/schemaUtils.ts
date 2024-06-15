@@ -37,7 +37,38 @@ export const createRouteSchema = ({ bodySchema, tags, description, responseSchem
 	if (responseSchema) {
 		schema.response = {
 			200: fromZodSchema(wrapSchemaInBaseResponse(responseSchema)),
+			'500': {
+				type: "object",
+				properties: {
+					status: {type: 'boolean'},
+					body: {
+						type: 'object',
+						properties: {
+							error: {type: 'string'}
+						}
+					}
+				}
+			}
 		};
+	} else {
+		schema.response = {
+			'500': {
+				type: "object",
+				properties: {
+					status: {
+						type: 'string',
+					},
+					body: {
+						type: 'boolean',
+						properties: {
+							error: {
+								type: 'string'
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	return schema;
