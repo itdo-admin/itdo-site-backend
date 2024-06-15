@@ -13,7 +13,7 @@ export default async function(fastify: FastifyInstance) {
 				bodySchema: UserSchema
 			})
 		}, authUser)
-		.get<ReqVacancyId>('/vacancy/:id(^\\d+)/info', {
+		.get<ReqVacancyId>('/vacancy/:id(^\\d+)', {
 			schema: createRouteSchema({
 				tags: ['vacancy'],
 				properties: {
