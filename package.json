@@ -5,6 +5,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "start:prod": "node ./out/api/main.js",
+    "start:dev": "nodemoin ./out/api/main.js",
     "generate-types-db": "sqlx-ts ./src/model/ -g --config .sqlxrc.json --generate-path ./src/model/types.ts",
     "test": "mocha"
   },
