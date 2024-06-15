@@ -40,7 +40,7 @@ await fastify.register(swaggerUi, {
 		docExpansion: 'full',
 		deepLinking: true,
 	},
-	staticCSP: true,
+	staticCSP: false,
 	transformSpecification: (swaggerObject, request, reply) => {
 		return swaggerObject;
 	},
