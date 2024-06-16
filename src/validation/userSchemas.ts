@@ -13,10 +13,12 @@ const JobsSchema = {
 	salary: z.string()
 }
 
-export const getJobsAllSchema = z.array(z.object({
+export const getJobSchema = z.object({
 	id: z.number(),
 	...JobsSchema
-}))
+}).nullable()
+
+export const getJobsAllSchema = z.array(getJobSchema)
 
 export const insertJobSchema = z.object(JobsSchema)
 const jobOptional = insertJobSchema.partial();
