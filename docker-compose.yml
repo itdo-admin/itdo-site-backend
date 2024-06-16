@@ -1,0 +1,29 @@
+version: '4'
+services:
+  postgres:
+    image: postgres:16.2
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_HOST}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - .env
+    ports:
+      - ${DB_PORT} # host:container
+    volumes:
+      - ./db:/var/lib/postgresql/data
+  backend:
+    build: .
+    ports:
+      - "${ACCESS_APP_PORT}:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./src:/home/node/app/src
+    env_file:
+      - .env
+    depends_on:
+      # Our app does not work without our database
+      # so this ensures our database is loaded first
+      - postgres
