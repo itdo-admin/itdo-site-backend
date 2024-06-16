@@ -15,7 +15,8 @@ export async function getVacancyService(): Promise<IGetVacancyAllResult[][] | Er
 export async function getVacancyIdService(id: number) {
 	try {
 		const vc = await getVacancyId(id);
-		return vc.rows[0];
+		console.log(vc.rows)
+		return vc.rows.length > 0 || null;
 	} catch (e) {
 		console.log(e);
 		return new Error('Error getVacancyIdService');
