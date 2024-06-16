@@ -2,11 +2,12 @@
   "name": "cm-itdo-backand",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT",
   "type": "module",
+  "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "start:prod": "node ./out/api/main.js",
-    "start:dev": "nodemoin ./out/api/main.js",
+    "start:dev": "nodemon --env-file=.env ./out/api/main.js",
     "generate-types-db": "sqlx-ts ./src/model/ -g --config .sqlxrc.json --generate-path ./src/model/types.ts",
     "test": "mocha"
   },
@@ -36,6 +37,7 @@
     "pino-pretty": "^11.2.1",
     "sinon": "^18.0.0",
     "sqlx-ts": "^0.12.0",
+    "typescript": "^5.4.5",
     "zod": "^3.23.8",
     "zod-to-json-schema": "^3.23.0"
   },
