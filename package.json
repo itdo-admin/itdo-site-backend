@@ -9,9 +9,14 @@
     "start:prod": "node ./out/api/main.js",
     "start:dev": "nodemon --env-file=.env ./out/api/main.js",
     "generate-types-db": "sqlx-ts ./src/model/ -g --config .sqlxrc.json --generate-path ./src/model/types.ts",
-    "test": "mocha"
+    "test": "mocha",
+    "migrate:up": "emigrate new",
+    "migrate:list": "emigrate list",
+    "migrate:create": "yarn emigrate new -x .sql"
   },
   "dependencies": {
+    "@emigrate/cli": "^0.18.3",
+    "@emigrate/postgres": "^0.3.1",
     "@fastify/cookie": "^9.3.1",
     "@fastify/middie": "^8.3.1",
     "@fastify/multipart": "^8.3.0",
