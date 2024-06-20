@@ -5,6 +5,7 @@
 -- Dumped from database version 16.2
 -- Dumped by pg_dump version 16.2
 
+-- migrate:up
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -40,7 +41,7 @@ ALTER TABLE public.jobs OWNER TO itdo;
 -- Name: projects; Type: TABLE; Schema: public; Owner: itdo
 --
 
-CREATE TABLE public.projects (
+CREATE TABLE public.projects (-- migrate:up
     id integer NOT NULL,
     title text,
     description text,
@@ -152,40 +153,24 @@ ALTER TABLE ONLY public.projects ALTER COLUMN id SET DEFAULT nextval('public.pro
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
-
---
 -- Data for Name: jobs; Type: TABLE DATA; Schema: public; Owner: itdo
---
 
-COPY public.jobs (id, title, description, summary, photo, salary) FROM stdin;
-1	wordpress developer	Разработчик wordpress	Разработчик wordpress	/fef.jpg	60000
-\.
+INSERT INTO public.jobs (id, title, description, summary, photo, salary) VALUES
+(1, 'wordpress developer', 'Разработчик wordpress', 'Разработчик wordpress', '/fef.jpg', '60000');
 
-
---
 -- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: itdo
---
 
-COPY public.projects (id, title, description, summary, photo, color) FROM stdin;
-1	Просто пироги	Проект калосальных размеров	Проект что-то там	\N	\N
-\.
+INSERT INTO public.projects (id, title, description, summary, photo, color) VALUES
+(1, 'Просто пироги', 'Проект калосальных размеров', 'Проект что-то там', NULL, NULL);
 
-
---
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: itdo
---
 
-COPY public.users (id, login, password, role) FROM stdin;
-1	test	test	1
-2	leo	$2b$12$rbOMYSBHNOkrI15.2SnWn.2ZFj3rFba0Y8.wKhv5QM6l08hbTQTxO	1
-3	Dinara	$2b$12$hQEmdvCXziRlcCxgPrlwPO9Zs5fxb/tJ/UlXD2ZtZkqJxPbqhH86G	1
-5	Ruslan	$2b$12$NjaelLwcLRVr5oV6VN23ieOF72tDeVrAy7HL9s9cIzDInNQflAd7u	1
-\.
+INSERT INTO public.users (id, login, password, role) VALUES
+(1, 'test', 'test', 1),
+(2, 'leo', '$2b$12$rbOMYSBHNOkrI15.2SnWn.2ZFj3rFba0Y8.wKhv5QM6l08hbTQTxO', 1),
+(3, 'Dinara', '$2b$12$hQEmdvCXziRlcCxgPrlwPO9Zs5fxb/tJ/UlXD2ZtZkqJxPbqhH86G', 1),
+(5, 'Ruslan', '$2b$12$NjaelLwcLRVr5oV6VN23ieOF72tDeVrAy7HL9s9cIzDInNQflAd7u', 1);
 
-
---
--- Name: projects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: itdo
---
 
 SELECT pg_catalog.setval('public.projects_id_seq', 1, true);
 
@@ -247,3 +232,10 @@ CREATE INDEX users_login_index ON public.users USING btree (login);
 -- PostgreSQL database dump complete
 --
 
+-- migrate:down
+DROP TABLE IF EXISTS public.jobs CASCADE;
+DROP TABLE IF EXISTS public.projects CASCADE;
+DROP TABLE IF EXISTS public.users CASCADE;
+DROP SEQUENCE IF EXISTS public.projects_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.table_name_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.users_id_seq CASCADE;
