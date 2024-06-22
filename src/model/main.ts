@@ -14,7 +14,7 @@ const argDoc = process.argv[2];
 argDoc !== 'docs' &&
 	pool.connect()
 		.catch(e => {
-			console.error(e.message);
+			console.error('db error', e.message);
 			process.exit(1);
 		})
 
