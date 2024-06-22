@@ -2,6 +2,7 @@ import Fastify, { type FastifyRequest, type RequestPayload } from 'fastify';
 import cookie, { type FastifyCookieOptions } from '@fastify/cookie';
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
+import cors from '@fastify/cors'
 
 const fastify = Fastify({
 	logger: {
@@ -14,6 +15,14 @@ const fastify = Fastify({
 			}
 		}
 	}
+})
+
+await fastify.register(cors, {
+	origin: true, // Разрешить все источники
+	methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Разрешить все методы
+	allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'x-auth'], // Разрешить все заголовки
+	credentials: true, // Разрешить отправку cookie
+	preflight: true,
 })
 
 await fastify.register(swagger, {
@@ -50,7 +59,7 @@ await fastify.register(swaggerUi, {
 fastify.register(async (app) => {
 	await app
 		.register(import('./v1/admin.js'), { prefix: '/admin' })
-		.register(import('./v1/client.js'), { prefix: '/client' })
+		.register(import('./v1/client.js'), { prefix: '/' })
 }, { prefix: '/api/v1' });
 
 fastify.setErrorHandler((error, req, reply) => {

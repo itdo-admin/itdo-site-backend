@@ -45,6 +45,7 @@
     "zod-to-json-schema": "^3.23.0"
   },
   "devDependencies": {
+    "@fastify/cors": "^9.0.1",
     "mocha": "^10.4.0"
   }
 }

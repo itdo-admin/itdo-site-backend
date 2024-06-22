@@ -6,22 +6,22 @@ import type {ReqVacancyAdd, ReqVacancyId, ReqVacancyUpdate} from "../../controll
 export default async function(fastify: FastifyInstance) {
 	fastify
 		.addHook('preHandler', async (req, reply) => {
+			console.log('req.headers', req.headers)
 			const authHeader = req.cookies['x-auth'];
-			console.log('req.cookies', req.cookies)
-			console.log('authHeader', authHeader)
-			if (!authHeader) {
-				reply
-					.code(401)
 
-				return { error: 'Unauthorized' }
+			if (!authHeader) {
+				return reply
+					.code(401)
+					.send({ error: 'Unauthorized' })
 			}
 
 			const user = await authenticateCookie(authHeader);
 
-			console.log(user)
+			console.log('user', user)
 			if (!user?.token) {
-				reply.code(403)
-				reply.send({ error: 'Forbidden' })
+				return reply
+					.code(403)
+					.send({ error: 'Forbidden' })
 			}
 		})
 		.get('/check', async() => {
