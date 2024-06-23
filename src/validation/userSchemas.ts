@@ -18,6 +18,13 @@ export const getJobSchema = z.object({
 	...JobsSchema
 }).nullable()
 
+export const RequestWriteSchema = z.object({
+	name: z.string(),
+	type: z.enum(['Telegram', 'Whatsapp', 'Звонок', 'Email']),
+	contact: z.string(),
+	message: z.string(),
+})
+
 export const getJobsAllSchema = z.array(getJobSchema)
 
 export const insertJobSchema = z.object(JobsSchema)
@@ -26,3 +33,4 @@ const jobOptional = insertJobSchema.partial();
 export type InsertJob = z.infer<typeof insertJobSchema>
 export type Job = z.infer<typeof getJobsAllSchema>;
 export type JobOptional = z.infer<typeof jobOptional>
+export type RequestWriteType = z.infer<typeof RequestWriteSchema>

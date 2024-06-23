@@ -1,5 +1,5 @@
 import type { FastifyRequest, RouteGenericInterface } from "fastify";
-import type { InsertJob, Job, JobOptional } from "../validation/userSchemas";
+import type {InsertJob, Job, JobOptional, RequestWriteType} from "../validation/userSchemas";
 import type { AuthUserBody } from "../api/types";
 
 export interface Auth extends RouteGenericInterface {
@@ -20,4 +20,8 @@ export interface ReqVacancyUpdate extends RouteGenericInterface {
 
 export interface ReqVacancyAdd extends RouteGenericInterface {
 	Body: InsertJob,
+}
+
+export interface ReqWriteMe extends RouteGenericInterface {
+	Body: RequestWriteType
 }

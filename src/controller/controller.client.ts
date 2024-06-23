@@ -6,8 +6,9 @@ import {
 	getVacancyService,
 	updateVacancyService
 } from "../api/service/vacansy.service.js";
-import type {ReqVacancyAdd, ReqVacancyId, ReqVacancyUpdate} from "./types";
+import type { ReqVacancyAdd, ReqVacancyId, ReqVacancyUpdate, ReqWriteMe } from "./types";
 import { ErrorHttp } from "./error.js";
+import { sendMailService } from "../api/service/sendMail.service.js";
 
 export abstract class ControllerVacancy {
 	static async getAll(req: FastifyRequest, reply: FastifyReply) {
@@ -91,5 +92,11 @@ export abstract class ControllerVacancy {
 		} else {
 			return res;
 		}
+	}
+}
+
+export class ControllerRequestWriteMe {
+	static async request(req: FastifyRequest<ReqWriteMe>, reply: FastifyReply) {
+		return await sendMailService(req.body);
 	}
 }

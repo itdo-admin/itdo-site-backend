@@ -1,9 +1,14 @@
 import type { FastifyInstance } from "fastify";
 import { authUser } from "../../controller/controller.auth.js";
-import { ControllerVacancy } from "../../controller/controller.client.js"
+import {ControllerRequestWriteMe, ControllerVacancy} from "../../controller/controller.client.js"
 import type { Auth, ReqVacancyId } from "../../controller/types";
 import { createRouteSchema } from '../../utils/schemaUtils.js';
-import {getJobsAllSchema, getJobSchema, UserSchema} from "../../validation/userSchemas.js";
+import {
+	getJobsAllSchema,
+	getJobSchema,
+	RequestWriteSchema,
+	UserSchema
+} from "../../validation/userSchemas.js";
 
 export default async function(fastify: FastifyInstance) {
 	fastify
@@ -32,8 +37,13 @@ export default async function(fastify: FastifyInstance) {
 		.get('/projects', () => {
 			return "";
 		})
-		.post('/request/write', () => {
-		})
+		.post('/request/writeme', {
+			schema: createRouteSchema({
+				tags: ['request'],
+				description: "Отправка сообщения пользователем на сайте",
+				bodySchema: RequestWriteSchema
+			})
+		}, ControllerRequestWriteMe.request)
 		.post('/request/vacancy', () => {
 		})
 }
