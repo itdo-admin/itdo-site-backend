@@ -113,21 +113,28 @@ export class ControllerRequestWriteMe {
 
 async function checkRecaptcha(key: string, reply: FastifyReply) {
 	try {
-		const resKey = key;
-		const secreteKey: string = "6Ledsf8pAAAAAM8WbA7C4rrAC5EDdXgyoukinDTU";
+		const secretKey = process.env.CAPTCHA_SECRET_KEY
+		const siteKey = key
 
-		const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secreteKey}&response=${resKey}`;
+		if(secretKey && siteKey) {
+			reply
+				.code(500)
+			return { error: 'invalid token recaptcha initial' }
+		}
+
+		const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${siteKey}`;
 
 		const { success } = (await axios.post(url)).data
 
 		if (!success) {
 			return reply
 				.code(400)
-				.send({error: 'Invalid reCAPTCHA'});
+				.send({ error: 'Invalid reCAPTCHA' });
 		}
 
 		return true;
 	} catch (error) {
-		return reply.code(500).send({error: 'Internal Server Error'});
+		console.log(error)
+		return reply.code(500).send({ error: 'Internal Server Error' });
 	}
 }
