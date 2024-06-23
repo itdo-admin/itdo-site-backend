@@ -9,6 +9,7 @@ import {
 import type { ReqVacancyAdd, ReqVacancyId, ReqVacancyUpdate, ReqWriteMe } from "./types";
 import { ErrorHttp } from "./error.js";
 import { sendMailService } from "../api/service/sendMail.service.js";
+import axios from "axios";
 
 export abstract class ControllerVacancy {
 	static async getAll(req: FastifyRequest, reply: FastifyReply) {
@@ -102,7 +103,31 @@ export abstract class ControllerVacancy {
 }
 
 export class ControllerRequestWriteMe {
-	static async request(req: FastifyRequest<ReqWriteMe>, reply: FastifyReply) {
-		return await sendMailService(req.body);
+	static async request({ body }: FastifyRequest<ReqWriteMe>, reply: FastifyReply) {
+		if (await checkRecaptcha(body.recaptchaResponse, reply)) {
+			reply.code(200);
+			return await sendMailService(body);
+		}
+	}
+}
+
+async function checkRecaptcha(key: string, reply: FastifyReply) {
+	try {
+		const resKey = key;
+		const secreteKey: string = "6Ledsf8pAAAAAM8WbA7C4rrAC5EDdXgyoukinDTU";
+
+		const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secreteKey}&response=${resKey}`;
+
+		const { success } = (await axios.post(url)).data
+
+		if (!success) {
+			return reply
+				.code(400)
+				.send({error: 'Invalid reCAPTCHA'});
+		}
+
+		return true;
+	} catch (error) {
+		return reply.code(500).send({error: 'Internal Server Error'});
 	}
 }

@@ -22,6 +22,7 @@ export const RequestWriteSchema = z.object({
 	type: z.enum(['Telegram', 'Whatsapp', 'Звонок', 'Email']),
 	contact: z.string(),
 	message: z.string(),
+	recaptchaResponse: z.string(),
 })
 
 export const getJobsAllSchema = z.array(getJobSchema)
