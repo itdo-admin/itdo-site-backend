@@ -18,18 +18,18 @@ export default async function(fastify: FastifyInstance) {
 				bodySchema: UserSchema
 			})
 		}, authUser)
-		.get<ReqVacancyId>('/vacancy/:id(^\\d+)', {
+		.get<ReqVacancyId>('/jobs/:id(^\\d+)', {
 			schema: createRouteSchema({
-				tags: ['vacancy'],
+				tags: ['jobs'],
 				properties: {
 					id: { type: 'number' },
 				},
 				responseSchema: getJobSchema
 			})
 		}, ControllerVacancy.getId)
-		.get('/vacancy', {
+		.get('/jobs', {
 			schema: createRouteSchema({
-				tags: ['vacancy'],
+				tags: ['jobs'],
 				description: "Получение всех вакансий",
 				responseSchema: getJobsAllSchema
 			})

@@ -4,12 +4,11 @@ export type GetVacancyAllParams = [];
 
 
 export interface IGetVacancyAllResult {
-    description: string | null;
+    description: string;
 	id: number;
-	photo: string | null;
-	salary: string | null;
-	summary: string | null;
-	title: string | null;
+	salary: string;
+	summary: string;
+	title: string;
 };
 
 
@@ -25,12 +24,11 @@ export type GetVacancyIdParams = [number];
 
 
 export interface IGetVacancyIdResult {
-    description: string | null;
+    description: string;
 	id: number;
-	photo: string | null;
-	salary: string | null;
-	summary: string | null;
-	title: string | null;
+	salary: string;
+	summary: string;
+	title: string;
 };
 
 
@@ -38,7 +36,6 @@ export interface IGetVacancyIdQuery {
     params: GetVacancyIdParams;
     result: IGetVacancyIdResult;
 };
-
 
 
 
@@ -58,7 +55,7 @@ export interface IDeleteJobQuery {
 
 
 
-export type InsertJobParams = [string, string, string, string, string];
+export type InsertJobParams = [string, string, string, string];
 
 
 export interface IInsertJobResult {

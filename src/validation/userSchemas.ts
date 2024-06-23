@@ -9,7 +9,6 @@ const JobsSchema = {
 	title: z.string(),
 	description: z.string(),
 	summary: z.string(),
-	photo: z.string(),
 	salary: z.string()
 }
 
@@ -29,6 +28,10 @@ export const getJobsAllSchema = z.array(getJobSchema)
 
 export const insertJobSchema = z.object(JobsSchema)
 const jobOptional = insertJobSchema.partial();
+
+export const JobCreateSchema = z.object({
+	id: z.number()
+}).nullable()
 
 export type InsertJob = z.infer<typeof insertJobSchema>
 export type Job = z.infer<typeof getJobsAllSchema>;

@@ -40,7 +40,7 @@ export const createRouteSchema = ({ bodySchema, tags, description, responseSchem
 			'500': {
 				type: "object",
 				properties: {
-					status: {type: 'boolean'},
+					status: { type: 'boolean' },
 					body: {
 						type: 'object',
 						properties: {

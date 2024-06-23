@@ -1,4 +1,5 @@
-import { addVacancy, deleteVacancy, getVacancyAll, getVacancyId, updateVacancy } from "../../model/model.client.js";
+import { getVacancyAll, getVacancyId,  } from "../../model/model.client.js";
+import { addVacancy, deleteVacancy, updateVacancy } from "../../model/model.admin.js"
 import type { IGetVacancyAllResult } from "../../model/types";
 import type { InsertJob, JobOptional } from "../../validation/userSchemas";
 
@@ -15,7 +16,6 @@ export async function getVacancyService(): Promise<IGetVacancyAllResult[][] | Er
 export async function getVacancyIdService(id: number) {
 	try {
 		const vc = await getVacancyId(id);
-		console.log(vc.rows.length > 0 && vc.rows[0] || null)
 		return vc.rows.length > 0 && vc.rows[0] || null;
 	} catch (e) {
 		console.log(e);
@@ -46,9 +46,9 @@ export async function deleteVacancyService(id: number) {
 export async function addVacancyService(data: InsertJob) {
 	try {
 		const vc = await addVacancy(data);
-		return vc.rows;
+		return vc.rowCount && vc.rowCount > 0 && vc.rows[0] || null;
 	} catch(e) {
 		console.log(e);
-		return new Error('Error deleteVacancyService');
+		return new Error('Error addVacancyService');
 	}
 }

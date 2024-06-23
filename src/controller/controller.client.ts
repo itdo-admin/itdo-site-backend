@@ -82,16 +82,15 @@ export abstract class ControllerVacancy {
 
 	static async add(req: FastifyRequest<ReqVacancyAdd>, reply: FastifyReply) {
 		const data = req.body;
-		// TODO check validation
 		const res = await addVacancyService(data);
 
 		if(res instanceof Error) {
 			reply
 				.status(500)
-				.send({ msg: res.message });
-		} else {
-			return res;
+			return {msg: res.message};
 		}
+
+		return res;
 	}
 }
 
