@@ -27,7 +27,7 @@ export async function sendMailService(body: RequestWriteType) {
 		from: '"it-do" <info@it-do.pro>',
 		to: "leonardo5878@yandex.ru",
 		subject: 'Новое сообщение на сайте',
-		text: `Имя: ${body.name}\n${body.type === 'Звонок' ? "Номер" : body.contact }: ${body.contact}\nСообщение: ${body.message}`
+		text: `Имя: ${body.name}\n${body.type === 'Звонок' ? "Номер" : body.type }: ${body.contact}\nСообщение: ${body.message}`
 	})
 
 	console.log(mail)
