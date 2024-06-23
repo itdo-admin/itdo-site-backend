@@ -69,24 +69,26 @@ fastify.setErrorHandler((error, req, reply) => {
 
 // Модифицирует ответ до сериализации, добавляя ответ в объект
 fastify.addHook('preSerialization', (request: FastifyRequest, reply, payload: RequestPayload, done) => {
-	if (payload && 'openapi' in payload) {
-		return done(null, payload)
+	if (payload) {
+		if ('openapi' in payload) {
+			return done(null, payload)
+		}
+
+		if ('message' in payload) {
+			return done(null, payload);
+		}
+
+		if ('error' in payload) {
+			return done(null, {
+				status: false,
+				body: payload
+			})
+		}
 	}
 
 	const result = {
 		status: true,
 		body: payload
-	}
-
-	if (payload && 'message' in payload) {
-		return done(null, payload);
-	}
-
-	if (payload && 'error' in payload) {
-		return done(null, {
-			status: false,
-			body: payload
-		})
 	}
 
 	return done(null, result);
