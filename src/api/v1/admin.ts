@@ -3,7 +3,7 @@ import { authenticateCookie } from "../service/auth.service.js";
 import { ControllerVacancy } from "../../controller/controller.client.js";
 import type { ReqVacancyAdd, ReqVacancyId, ReqVacancyUpdate } from "../../controller/types";
 import { createRouteSchema } from "../../utils/schemaUtils.js";
-import { insertJobSchema, JobCreateSchema } from "../../validation/userSchemas.js";
+import { insertJobSchema, JobCreateSchema, jobUpdate } from "../../validation/userSchemas.js";
 
 export default async function(fastify: FastifyInstance) {
 	fastify
@@ -33,7 +33,6 @@ export default async function(fastify: FastifyInstance) {
 		})
 		.post('/project/add', () => {})
 		.get(`/project/delete/:id(^\\d+)`, () => {})
-		.post('/project/edit', () => {})
 		.post('/project/update', () => {})
 		// Jobs
 		.post<ReqVacancyAdd>('/jobs/add', {
@@ -44,6 +43,22 @@ export default async function(fastify: FastifyInstance) {
 				responseSchema: JobCreateSchema,
 			})
 		}, ControllerVacancy.add)
-		.get<ReqVacancyId>(`/jobs/delete/:id(^\\d+)`, ControllerVacancy.delete)
-		.post<ReqVacancyUpdate>('/jobs/update', ControllerVacancy.update);
+		.get<ReqVacancyId>(`/jobs/delete/:id(^\\d+)`, {
+			schema: createRouteSchema({
+				tags: ['jobs', 'admin'],
+				description: "Удаление вакансии по id",
+				properties: {
+					id: {
+						type: "number"
+					}
+				}
+			})
+		}, ControllerVacancy.delete)
+		.post<ReqVacancyUpdate>('/jobs/update', {
+			schema: createRouteSchema({
+				tags: ['jobs', 'admin'],
+				description: "Обновление вакансии",
+				bodySchema: jobUpdate,
+			})
+		}, ControllerVacancy.update);
 }

@@ -27,7 +27,10 @@ export const RequestWriteSchema = z.object({
 export const getJobsAllSchema = z.array(getJobSchema)
 
 export const insertJobSchema = z.object(JobsSchema)
-const jobOptional = insertJobSchema.partial();
+export const jobOptional = insertJobSchema.partial();
+export const jobUpdate = jobOptional.merge(z.object({
+	id: z.number()
+}))
 
 export const JobCreateSchema = z.object({
 	id: z.number()
@@ -36,4 +39,5 @@ export const JobCreateSchema = z.object({
 export type InsertJob = z.infer<typeof insertJobSchema>
 export type Job = z.infer<typeof getJobsAllSchema>;
 export type JobOptional = z.infer<typeof jobOptional>
+export type JobUpdate = z.infer<typeof jobUpdate>
 export type RequestWriteType = z.infer<typeof RequestWriteSchema>

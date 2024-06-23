@@ -1,7 +1,7 @@
 import client from "./main.js";
 import type { DeleteJobParams, IDeleteJobResult, IInsertJobResult, InsertJobParams } from "./types";
 import { sql } from "sqlx-ts";
-import type { InsertJob, JobOptional } from "../validation/userSchemas";
+import type {InsertJob, JobOptional, JobUpdate} from "../validation/userSchemas";
 import type { QueryResultBase } from "pg";
 
 
@@ -18,19 +18,31 @@ export async function addVacancy(body: InsertJob) {
 		INSERT INTO jobs (title, description, summary, salary) VALUES ($1, $2, $3, $4) RETURNING id`, values)
 }
 
-export async function updateVacancy(body: JobOptional): Promise<QueryResultBase> {
+export async function updateVacancy(body: JobUpdate): Promise<QueryResultBase> {
 	try {
+		const data = body;
+		const id: number = data.id;
+
+		//@ts-ignore
+		delete body.id
+
 		let query: string = 'UPDATE jobs SET '
 
-		const setClauses = Object.keys(body).map((key, index) => {
-			return `${key} = $${index + 1}`;
-		});
+		const setClauses = Object
+			.keys(body)
+			.map((key, index) => {
+				return `${key} = $${index + 1}`;
+			});
 
 		const values = Object.values(body);
-		const finalQuery = `${query}${setClauses.join(', ')}`;
+		const finalQuery = `${query}${setClauses.join(', ')} WHERE id = $${setClauses.length + 1}`;
+		values.push(id)
 
-		// Необходимо преобразование, потому что иначе возникает ошибка типизации
-		return await client.query(sql(finalQuery as unknown as TemplateStringsArray), values)
+		console.log(values)
+		console.log(finalQuery)
+
+		// sqlx не умеет в динамические запросы, возвращает первую букву запроса
+		return client.query(finalQuery, values)
 	} catch (e) {
 		console.log(e);
 		throw e;

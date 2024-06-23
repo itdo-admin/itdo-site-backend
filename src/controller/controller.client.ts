@@ -31,7 +31,6 @@ export abstract class ControllerVacancy {
 		try {
 			const vacancyId = req.params.id;
 
-			// TODO добавить валидацию
 			if(vacancyId !== undefined) {
 				const vcs = await getVacancyIdService(vacancyId);
 
@@ -50,17 +49,17 @@ export abstract class ControllerVacancy {
 		}
 	}
 
-	static async update(req: FastifyRequest<ReqVacancyUpdate>, reply: FastifyReply): Promise<boolean | void> {
+	static async update(req: FastifyRequest<ReqVacancyUpdate>, reply: FastifyReply) {
 		try {
 			const updateData = req.body;
-			const vcs = await updateVacancyService(updateData);
+			const updated = await updateVacancyService(updateData);
 
-			if(vcs instanceof Error) {
-				reply
+			if(updated instanceof Error) {
+				return reply
 					.status(500)
-					.send({ msg: vcs.message });
+					.send({ msg: updated.message });
 			} else {
-				return vcs;
+				return { updated: updated };
 			}
 		} catch (error) {
 			ErrorHttp(error, reply)
@@ -68,29 +67,37 @@ export abstract class ControllerVacancy {
 	}
 
 	static async delete(req: FastifyRequest<ReqVacancyId>, reply: FastifyReply) {
-		const id = req.params.id;
-		const deleted = await deleteVacancyService(id);
+		try {
+			const id = req.params.id;
+			const deleted = await deleteVacancyService(id);
 
-		if(deleted instanceof Error) {
-			reply
-				.status(500)
-			return { msg: deleted.message };
+			if (deleted instanceof Error) {
+				reply
+					.status(500)
+				return {msg: deleted.message};
+			}
+
+			return deleted;
+		} catch (error) {
+			ErrorHttp(error, reply)
 		}
-
-		return deleted;
 	}
 
 	static async add(req: FastifyRequest<ReqVacancyAdd>, reply: FastifyReply) {
-		const data = req.body;
-		const res = await addVacancyService(data);
+		try {
+			const data = req.body;
+			const res = await addVacancyService(data);
 
-		if(res instanceof Error) {
-			reply
-				.status(500)
-			return {msg: res.message};
+			if (res instanceof Error) {
+				reply
+					.status(500)
+				return {msg: res.message};
+			}
+
+			return res;
+		} catch (error) {
+			ErrorHttp(error, reply)
 		}
-
-		return res;
 	}
 }
 
