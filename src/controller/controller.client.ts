@@ -75,7 +75,7 @@ export abstract class ControllerVacancy {
 			if (deleted instanceof Error) {
 				reply
 					.status(500)
-				return {msg: deleted.message};
+				return { msg: deleted.message };
 			}
 
 			return deleted;
@@ -92,7 +92,7 @@ export abstract class ControllerVacancy {
 			if (res instanceof Error) {
 				reply
 					.status(500)
-				return {msg: res.message};
+				return { msg: res.message };
 			}
 
 			return res;
@@ -123,7 +123,6 @@ async function checkRecaptcha(key: string, reply: FastifyReply) {
 		}
 
 		const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${siteKey}`;
-
 		const { success } = (await axios.post(url)).data
 
 		if (!success) {

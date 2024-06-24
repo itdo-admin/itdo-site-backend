@@ -22,7 +22,6 @@ export async function updateVacancy(body: JobUpdate): Promise<QueryResultBase> {
 	try {
 		const data = body;
 		const id: number = data.id;
-
 		//@ts-ignore
 		delete body.id
 

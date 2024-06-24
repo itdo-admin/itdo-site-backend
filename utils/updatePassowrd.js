@@ -6,7 +6,7 @@ export async function checkAuthUser(login, passwordUser){
         const salt = await bcrypt.genSalt(12);
         const password = await bcrypt.hash(passwordUser, salt)
 
-        return await client.query(`UPDATE users SET password = password WHERE login = $1`, [password]);
+        return await client.query(`UPDATE users SET password = $1 WHERE login = $2`, [password, login]);
     } catch (e) {
         console.log(e);
     }
