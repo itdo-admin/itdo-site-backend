@@ -35,7 +35,7 @@ export async function getProjectsAllShort() {
 	try {
 		return await client.query<IGetProjectAllShortResult>(sql`
 			-- @name: getProjectAllShort
-			SELECT id, title, description, summary, photo, color FROM projects LIMIT 4`);
+			SELECT id, title, description, summary, photo, color FROM projects ORDER BY id LIMIT 4`);
 	} catch (e) {
 		console.log(e);
 		throw e;
@@ -46,7 +46,7 @@ export async function getProjectsAllFull() {
 	try {
 		return await client.query<IGetAllProjectFullResult>(sql`
 			-- @name: getAllProjectFull
-			SELECT id, title, description, summary, photo FROM projects`);
+			SELECT id, title, description, summary, photo FROM projects ORDER BY id`);
 	} catch (e) {
 		console.log(e);
 		throw e;
