@@ -1,4 +1,4 @@
-import type { FastifyReply, FastifyRequest} from "fastify";
+import type { FastifyReply, FastifyRequest } from "fastify";
 import {
 	addVacancyService,
 	deleteVacancyService,
@@ -6,6 +6,7 @@ import {
 	getVacancyService,
 	updateVacancyService
 } from "../api/service/vacansy.service.js";
+import { getProjectsAllFullService, getProjectsAllShortService } from "../api/service/projects.service.js";
 import type { ReqVacancyAdd, ReqVacancyId, ReqVacancyUpdate, ReqWriteMe } from "./types";
 import { ErrorHttp } from "./error.js";
 import { sendMailService } from "../api/service/sendMail.service.js";
@@ -14,7 +15,7 @@ import axios from "axios";
 export abstract class ControllerVacancy {
 	static async getAll(req: FastifyRequest, reply: FastifyReply) {
 		try {
-			const vc = await getVacancyService()
+			const vc = await getVacancyService();
 
 			if(vc instanceof Error) {
 				reply
@@ -113,8 +114,8 @@ export class ControllerRequestWriteMe {
 
 async function checkRecaptcha(key: string, reply: FastifyReply) {
 	try {
-		const secretKey = process.env.CAPTCHA_SECRET_KEY
-		const siteKey = key
+		const secretKey = process.env.CAPTCHA_SECRET_KEY;
+		const siteKey = key;
 
 		if(secretKey && siteKey) {
 			reply
@@ -135,5 +136,41 @@ async function checkRecaptcha(key: string, reply: FastifyReply) {
 	} catch (error) {
 		console.log(error)
 		return reply.code(500).send({ error: 'Internal Server Error' });
+	}
+}
+
+export class getProjectsController {
+	static async getAllShort(req: FastifyRequest, reply: FastifyReply) {
+		try {
+			const res = await getProjectsAllShortService();
+
+			if (res instanceof Error) {
+				reply
+					.status(500)
+				return { msg: res.message };
+			}
+
+			return res;
+		} catch (e) {
+			console.log(e);
+			ErrorHttp(e, reply)
+		}
+	}
+
+	static async getAllFull(req: FastifyRequest, reply: FastifyReply) {
+		try {
+			const res = await getProjectsAllFullService();
+
+			if (res instanceof Error) {
+				reply
+					.status(500)
+				return { msg: res.message };
+			}
+
+			return res;
+		} catch (e) {
+			console.log(e);
+			ErrorHttp(e, reply)
+		}
 	}
 }

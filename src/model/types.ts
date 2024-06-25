@@ -39,6 +39,47 @@ export interface IGetVacancyIdQuery {
 
 
 
+
+export type GetProjectAllShortParams = [];
+
+
+export interface IGetProjectAllShortResult {
+    color: string;
+	description: string;
+	id: number;
+	photo: any;
+	summary: string;
+	title: string;
+};
+
+
+export interface IGetProjectAllShortQuery {
+    params: GetProjectAllShortParams;
+    result: IGetProjectAllShortResult;
+};
+
+
+
+
+export type GetAllProjectFullParams = [];
+
+
+export interface IGetAllProjectFullResult {
+    description: string;
+	id: number;
+	photo: any;
+	summary: string;
+	title: string;
+};
+
+
+export interface IGetAllProjectFullQuery {
+    params: GetAllProjectFullParams;
+    result: IGetAllProjectFullResult;
+};
+
+
+
 export type DeleteJobParams = [number];
 
 

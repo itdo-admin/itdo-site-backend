@@ -1,6 +1,6 @@
 import type { FastifyInstance } from "fastify";
 import { authUser } from "../../controller/controller.auth.js";
-import {ControllerRequestWriteMe, ControllerVacancy} from "../../controller/controller.client.js"
+import {ControllerRequestWriteMe, ControllerVacancy, getProjectsController} from "../../controller/controller.client.js"
 import type { Auth, ReqVacancyId } from "../../controller/types";
 import { createRouteSchema } from '../../utils/schemaUtils.js';
 import {
@@ -34,9 +34,8 @@ export default async function(fastify: FastifyInstance) {
 				responseSchema: getJobsAllSchema
 			})
 		}, ControllerVacancy.getAll)
-		.get('/projects', () => {
-			return "";
-		})
+		.get('/projects/short', getProjectsController.getAllShort)
+		.get('/projects/full', getProjectsController.getAllFull)
 		.post('/request/writeme', {
 			schema: createRouteSchema({
 				tags: ['request'],
