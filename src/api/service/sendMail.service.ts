@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import { type RequestWriteType } from "../../validation/userSchemas.js";
+import {ErrorHttp} from "../../controller/error";
 
 const transporter = nodemailer.createTransport({
 	host: "smtp.jino.ru",
@@ -12,35 +13,49 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function sendMailService(body: RequestWriteType) {
-	if(body.type === 'Email') {
+	try {
+		if (body.type === 'Email') {
+			const mail = await transporter.sendMail({
+				from: '"it-do" <info@it-do.pro>',
+				to: body.contact,
+				subject: 'Автоматическое письмо',
+				text: `Здравствуйте, ${body.name}. Мы получили ваше сообщение и в ближайшее время ответим вам!`
+			})
+
+			console.log(mail)
+		}
+
+		const contact = await typeInteractive(body.type, body.contact, body.name);
+		console.log('contact', contact)
+		let message = "Сообщение:<br>" + body.message
+		message = message.replace(/\n{2,}/g, '</p><p>').replace(/\n/g, '<br>');
+
+		console.log('message', message)
+
 		const mail = await transporter.sendMail({
 			from: '"it-do" <info@it-do.pro>',
-			to: body.contact,
-			subject: 'Автоматическое письмо',
-			text: `Здравствуйте, ${body.name}. Мы получили ваше сообщение и в ближайшее время ответим вам!`
+			to: "leonardo5878@yandex.ru",
+			subject: `Новое сообщение на сайте от ${body.name}`,
+			html: `<b>Имя:</b> ${body.name}<br>${body.type === 'Call' ? "Номер" : body.type}: ${contact}<br><br>${message}`
 		})
 
 		console.log(mail)
-	}
 
-	const contact = await typeInteractive(body.type, body.contact, body.name);
-	console.log('contact', contact)
-	let message = "Сообщение:<br>" + body.message
-	message = message.replace(/\n{2,}/g, '</p><p>').replace(/\n/g, '<br>');
+		return {
+			msg: 'ok'
+		}
+	} catch (e) {
+		console.log(e);
 
-	console.log('message', message)
+		if (e instanceof Error) {
+			return {
+				msg: e.message
+			}
+		}
 
-	const mail = await transporter.sendMail({
-		from: '"it-do" <info@it-do.pro>',
-		to: "leonardo5878@yandex.ru",
-		subject: `Новое сообщение на сайте от ${body.name}`,
-		html: `<b>Имя:</b> ${body.name}<br>${body.type === 'Call' ? "Номер" : body.type }: ${contact}<br><br>${message}`
-	})
-
-	console.log(mail)
-
-	return {
-		msg: 'ok'
+		return {
+			msg: 'failed',
+		}
 	}
 }
 
