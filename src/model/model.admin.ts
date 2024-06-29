@@ -1,9 +1,8 @@
 import client from "./main.js";
 import type { DeleteJobParams, IDeleteJobResult, IInsertJobResult, InsertJobParams } from "./types";
 import { sql } from "sqlx-ts";
-import type {InsertJob, JobOptional, JobUpdate} from "../validation/userSchemas";
+import type { InsertJob, JobUpdate } from "../validation/userSchemas";
 import type { QueryResultBase } from "pg";
-
 
 export async function deleteVacancy(id: number) {
 	return client.query<IDeleteJobResult, DeleteJobParams>(sql`
@@ -12,10 +11,19 @@ export async function deleteVacancy(id: number) {
 }
 
 export async function addVacancy(body: InsertJob) {
-	const values = Object.keys(body).map(key => body[key as keyof InsertJob]) as InsertJobParams;
+	const values = (dataIterable: InsertJob): InsertJobParams => {
+		const values = [];
+
+		for(let value in dataIterable) {
+			 values.push(dataIterable[value as keyof InsertJob])
+		}
+
+		return values as InsertJobParams;
+	}
+
 	return client.query<IInsertJobResult, InsertJobParams>(sql`
 		-- @name: insertJob
-		INSERT INTO jobs (title, description, summary, salary) VALUES ($1, $2, $3, $4) RETURNING id`, values)
+		INSERT INTO jobs (title, description, summary, salary) VALUES ($1, $2, $3, $4) RETURNING id`, values(body))
 }
 
 export async function updateVacancy(body: JobUpdate): Promise<QueryResultBase> {

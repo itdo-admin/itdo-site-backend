@@ -1,6 +1,5 @@
 import nodemailer from 'nodemailer';
 import { type RequestWriteType } from "../../validation/userSchemas.js";
-import {ErrorHttp} from "../../controller/error";
 
 const transporter = nodemailer.createTransport({
 	host: "smtp.jino.ru",
