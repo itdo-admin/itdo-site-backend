@@ -15,6 +15,9 @@ export interface ReqVacancyId extends RouteGenericInterface {
 }
 
 export interface ReqVacancyUpdate extends RouteGenericInterface {
+	Params: {
+		id: number
+	},
 	Body: JobUpdate
 }
 

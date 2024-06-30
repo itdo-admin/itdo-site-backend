@@ -53,8 +53,9 @@ export abstract class ControllerVacancy {
 
 	static async update(req: FastifyRequest<ReqVacancyUpdate>, reply: FastifyReply) {
 		try {
+			const id = req.params.id;
 			const updateData = req.body;
-			const updated = await updateVacancyService(updateData);
+			const updated = await updateVacancyService(id, updateData);
 
 			if(updated instanceof Error) {
 				return reply

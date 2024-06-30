@@ -29,9 +29,7 @@ export const getJobsAllSchema = z.array(getJobSchema)
 
 export const insertJobSchema = z.object(JobsSchema)
 export const jobOptional = insertJobSchema.partial();
-export const jobUpdate = jobOptional.merge(z.object({
-	id: z.number()
-}))
+export const jobUpdate = jobOptional
 
 export const JobCreateSchema = z.object({
 	id: z.number()

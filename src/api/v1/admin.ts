@@ -54,10 +54,15 @@ export default async function(fastify: FastifyInstance) {
 				}
 			})
 		}, ControllerVacancy.delete)
-		.post<ReqVacancyUpdate>('/jobs/update', {
+		.post<ReqVacancyUpdate>('/jobs/update/:id(^\\d+)', {
 			schema: createRouteSchema({
 				tags: ['jobs', 'admin'],
 				description: "Обновление вакансии",
+				properties: {
+					id: {
+						type: "number",
+					},
+				},
 				bodySchema: jobUpdate,
 			})
 		}, ControllerVacancy.update);

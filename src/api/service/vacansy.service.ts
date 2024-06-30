@@ -23,9 +23,9 @@ export async function getVacancyIdService(id: number) {
 	}
 }
 
-export async function updateVacancyService(data: JobUpdate) {
+export async function updateVacancyService(id: number, data: JobUpdate) {
 	try {
-		const vc = await updateVacancy(data);
+		const vc = await updateVacancy(id, data);
 		return vc.rowCount !== null && vc.rowCount > 0;
 	} catch (e) {
 		console.log(e);

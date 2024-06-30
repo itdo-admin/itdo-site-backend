@@ -4,6 +4,13 @@ import { sql } from "sqlx-ts";
 import type { InsertJob, JobUpdate } from "../validation/userSchemas";
 import type { QueryResultBase } from "pg";
 
+interface UpdateJob {
+	title?: string,
+	description?: string,
+	summary?: string,
+	salary?: string
+}
+
 export async function deleteVacancy(id: number) {
 	return client.query<IDeleteJobResult, DeleteJobParams>(sql`
 		-- @name: deleteJob
@@ -11,37 +18,27 @@ export async function deleteVacancy(id: number) {
 }
 
 export async function addVacancy(body: InsertJob) {
-	const values = (dataIterable: InsertJob): InsertJobParams => {
-		const values = [];
-
-		for(let value in dataIterable) {
-			 values.push(dataIterable[value as keyof InsertJob])
-		}
-
-		return values as InsertJobParams;
-	}
+	const values = Object.values(body) as InsertJobParams
 
 	return client.query<IInsertJobResult, InsertJobParams>(sql`
 		-- @name: insertJob
-		INSERT INTO jobs (title, description, summary, salary) VALUES ($1, $2, $3, $4) RETURNING id`, values(body))
+		INSERT INTO jobs (title, description, summary, salary) VALUES ($1, $2, $3, $4) RETURNING id`, values)
 }
 
-export async function updateVacancy(body: JobUpdate): Promise<QueryResultBase> {
+export async function updateVacancy(id: number, updatedData: UpdateJob): Promise<QueryResultBase> {
 	try {
-		const data = body;
-		const id: number = data.id;
-		//@ts-ignore
-		delete body.id
+		const values = []
 
+		let i = 1; // Потому что в sql с единицы считается
+		let setClauses = [];
 		let query: string = 'UPDATE jobs SET '
 
-		const setClauses = Object
-			.keys(body)
-			.map((key, index) => {
-				return `${key} = $${index + 1}`;
-			});
+		for (const key in updatedData) {
+			values.push(updatedData[key as keyof JobUpdate]);
+			setClauses.push(`${key} = $${i}`)
+			i++
+		}
 
-		const values = Object.values(body);
 		const finalQuery = `${query}${setClauses.join(', ')} WHERE id = $${setClauses.length + 1}`;
 		values.push(id)
 
